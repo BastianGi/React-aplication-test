@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Card, Button as RNEButton } from 'react-native-elements';
 import { useState, useEffect } from 'react';
-import { Button, View, Text, TextInput, Alert } from 'react-native';
+import { Button, View, Text, TextInput, Alert , ScrollView} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import rootReducer from './src/store/store';
@@ -16,11 +16,11 @@ const mapStateToProps = (state) => ({
 const store = createStore(rootReducer);
 function HomeScreen({ navigation }) {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 20 }}>
       <Text>Home Screen</Text>
       <Button title="Go to Search" onPress={() => navigation.navigate('Search')} />
       <Button title="Go to Favorites" onPress={() => navigation.navigate('Favorites')} />
-      
+  
     </View>
   );
 }
@@ -52,6 +52,7 @@ function SearchMovieScreen({ navigation, addFavoriteMovie }) {
   };
 
   return (
+    <ScrollView>
     <View style={{ padding: 16 }}>
       <TextInput
         style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 8 }}
@@ -59,7 +60,10 @@ function SearchMovieScreen({ navigation, addFavoriteMovie }) {
         value={inputValue}
         onChangeText={handleInputChange}
       />
+      <View style={{marginTop: 20,flexDirection: 'column', gap: 20 }} >
       <Button title="Enviar Datos" onPress={handleButtonPress} />
+      <Button title="Go to Favorites" onPress={() => navigation.navigate('Favorites')} />
+      </View>
       {data?.Search ? (
         <View style={{ marginTop: 20 }}>
           {data?.Search.map((result) => (
@@ -84,6 +88,7 @@ function SearchMovieScreen({ navigation, addFavoriteMovie }) {
         <Text>No hay resultados para mostrar.</Text>
       )}
     </View>
+    </ScrollView>
   );
 }
 
@@ -115,7 +120,6 @@ function Movies({ route, navigation }) {
   );
 }
 function Favorites({ navigation, favoriteMovies, removeFavoriteMovie }) {
-  console.log(favoriteMovies)
   const handleRemoveFavoritesPress = (movie) => {
     removeFavoriteMovie(movie);
   }
@@ -123,15 +127,18 @@ function Favorites({ navigation, favoriteMovies, removeFavoriteMovie }) {
     navigation.navigate('Movies', { itemId: imdbID })
   };
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <ScrollView>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 50 }}>
       {favoriteMovies.length ? (
       <View>
+        <Text> Peliculas favoritas </Text>
         {favoriteMovies?.map((movie, index) => (
           <Card key={movie?.imdbID} containerStyle={{ marginBottom: 10 }}>
             <Card.Image source={{ uri: movie?.Poster }} style={{ height: 450, width: 300 }} />
             <Text>{movie?.Title}</Text>
             <Text>{movie?.Year}</Text>
-            <RNEButton
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+            <RNEButton 
               title="Detalles"
               onPress={() => handleDetailPress(movie?.imdbID)}
             />
@@ -139,23 +146,26 @@ function Favorites({ navigation, favoriteMovies, removeFavoriteMovie }) {
               title="Eliminar de Favoritos"
               onPress={() => handleRemoveFavoritesPress(movie?.imdbID)}
             />
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}> 
             
             </View>
           </Card>
         ))}
       </View>
       ) : (
-        <Text>Aun no se añaden favoritos.</Text>
+        <View>
+          <Text>Aun no se añaden favoritos.</Text>
+        </View>
       )}
+      <View style={{ flexDirection: 'column', gap: 20, marginTop: 20, marginBottom: 20  }}>
       <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
       <Button title="Go to Search" onPress={() => navigation.navigate('Search')} />
+      </View>
     </View>
+    </ScrollView>
   );
 }
 
 const Stack = createNativeStackNavigator();
-
 function App() {
   return (
     <Provider store={store}>
