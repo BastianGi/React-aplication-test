@@ -12,9 +12,7 @@ const Cards = ({ result , navigation}) => {
     const handleDetailPress = (imdbID) => {
         navigation.navigate('Movies', { itemId: imdbID })
     };
-    const handleFavoritesPress = (result) => {
-        addFavoriteMovie(() => dispatch({ type:'ADDFAVORITE'}),[result])
-    };
+    
     return (
         <Card key={result.imdbID} containerStyle={{ marginBottom: 10, borderRadius: 10 }}>
             <Card.Image source={{ uri: result?.Poster }} style={{ height: 400 }} />

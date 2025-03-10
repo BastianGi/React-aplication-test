@@ -5,8 +5,10 @@ import { addFavoriteMovie, removeFavoriteMovie } from '../shared/actions';
 import { Text } from 'react-native-elements';
 import Cards from '../components/Cards';
 import { useNavigation } from '@react-navigation/native';
+import { Pressable } from 'react-native';
+import Icon from 'react-native-ico-material-design';
 
-const SearchMovieScreen=({ navigation, addFavoriteMovie }) => {
+const SearchMovieScreen = ({ navigation, addFavoriteMovie }) => {
     const [data, setData] = useState(null);
     const [inputValue, setInputValue] = useState('');
     const handleFavoritesPress = (movie) => {
@@ -34,30 +36,47 @@ const SearchMovieScreen=({ navigation, addFavoriteMovie }) => {
     };
 
     return (
-        <ScrollView>
-            <View style={{ padding: 16 }}>
-                <TextInput
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 8 }}
-                    placeholder="Ingresa datos"
-                    value={inputValue}
-                    onChangeText={handleInputChange}
-                />
-                <View style={{ marginTop: 20, flexDirection: 'column', gap: 20 }} >
-                    <Button title="Enviar Datos" onPress={handleButtonPress} />
-                    <Button title="Go to Favorites" onPress={() => navigation.navigate('Favorites')} />
-                </View>
-                {data?.Search ? (
-                    <View style={{ marginTop: 20 }}>
-                        {data?.Search.map((result) => (
-                            <Cards navigation={navigation} result={result}>
-                            </Cards>
-                        ))}
+        <View>
+            <ScrollView style={{marginBottom: 50}} >
+                <View style={{ padding: 16 }}>
+                    <TextInput
+                        style={{ height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 8 }}
+                        placeholder="Ingresa datos"
+                        value={inputValue}
+                        onChangeText={handleInputChange}
+                    />
+                    <View style={{ marginTop: 20, flexDirection: 'column', gap: 20 }} >
+                        <Button title="Enviar Datos" onPress={handleButtonPress} />
+                        <Button title="Go to Favorites" onPress={() => navigation.navigate('Favorites')} />
                     </View>
-                ) : (
-                    <Text>No hay resultados para mostrar.</Text>
-                )}
-            </View>
-        </ScrollView>
+                    {data?.Search ? (
+                        <View style={{ marginTop: 20 }}>
+                            {data?.Search.map((result) => (
+                                <Cards navigation={navigation} result={result}>
+                                </Cards>
+                            ))}
+                        </View>
+                    ) : (
+                        <Text>No hay resultados para mostraaaar.</Text>
+                    )}
+                </View>
+            </ScrollView>
+            {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 20, backgroundColor: 'white' }}>
+                <View style={{ position: 'absolute', alignItems: 'center', bottom: 20 }}>
+                    <View style={{ flexDirection: 'row', backgroundColor: '#85D4FB', width: '90%', justifyContent: 'space-evenly' }}>
+                        <Pressable style={{ padding: 14 }} onPress={() => navigation.navigate('Home')} android_ripple={{ borderless: true, radius: 50 }}>
+                            <Icon name="home-button" />
+                        </Pressable>
+                        <Pressable style={{ padding: 14 }} onPress={() => navigation.navigate('Search')} android_ripple={{ borderless: true, radius: 50 }}>
+                            <Icon name="searching-magnifying-glass" />
+                        </Pressable>
+                        <Pressable style={{ padding: 14 }} onPress={() => navigation.navigate('Favorites')} android_ripple={{ borderless: true, radius: 50 }}>
+                            <Icon name="favorite-heart-button" />
+                        </Pressable>
+                    </View>
+                </View>
+            </View> */}
+        </View>
     );
 }
 
